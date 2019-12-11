@@ -2,7 +2,7 @@ from typing import NamedTuple
 
 
 class Constants(NamedTuple):
-    WIDTH = 1080
+    WIDTH = 1580
     HEIGHT = 760
     FPS = 60
     FONT_NAME = 'arial'

@@ -1,5 +1,7 @@
 import pygame
+
 from constants import Constants as C, Color
+from sprites import Wall, Cube
 
 
 class Game:
@@ -21,6 +23,11 @@ class Game:
         self.all_sprites = pygame.sprite.LayeredUpdates()  # group that lets you specify the order sprites are drawn
         self.cubes = pygame.sprite.Group()
         self.wall = pygame.sprite.Group()
+
+        self.wall = Wall(50, C.HEIGHT, 200, 0)
+        self.floor = Wall(C.WIDTH, 50, 0, C.HEIGHT-50)
+        self.cube = Cube(100, Color.GREEN, 100, 100, 600, C.HEIGHT-150, 0, 0)
+        self.all_sprites.add(self.wall, self.floor, self.cube)
 
         self._run()
 
