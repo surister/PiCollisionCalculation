@@ -22,12 +22,14 @@ class Game:
 
         self.all_sprites = pygame.sprite.LayeredUpdates()  # group that lets you specify the order sprites are drawn
         self.cubes = pygame.sprite.Group()
-        self.wall = pygame.sprite.Group()
+        self.wall_group = pygame.sprite.Group()
 
         self.wall = Wall(50, C.HEIGHT, 200, 0)
         self.floor = Wall(C.WIDTH, 50, 0, C.HEIGHT-50)
-        self.cube = Cube(100, Color.GREEN, 100, 100, 600, C.HEIGHT-150, 0, 0)
-        self.all_sprites.add(self.wall, self.floor, self.cube)
+        self.cube = Cube(100, Color.GREEN, 100, 100, 600, C.HEIGHT-150, 3, initspeedX=1)
+
+        self.all_sprites.add(self.cube, self.wall, self.floor)
+        self.wall_group.add(self.wall)
 
         self._run()
 
@@ -42,9 +44,11 @@ class Game:
 
     def _update(self):
         self.all_sprites.update()
+        hits = pygame.sprite.spritecollide(self.cube, self.wall_group, False)
+        if hits:
+            self.cube.change_x()
 
     def _events(self):
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.simulating = False
@@ -53,6 +57,9 @@ class Game:
     def _draw(self):
         self.all_sprites.draw(self.screen)
         # self._draw_text('test', 100, Color.BLUE, 100, 200)
+        self.screen.fill(Color.BLACK)
+        for sprite in self.all_sprites:
+            self.screen.blit(sprite.image, sprite.rect)
         pygame.display.flip()
 
     def _draw_text(self, text, size, color, x, y):
